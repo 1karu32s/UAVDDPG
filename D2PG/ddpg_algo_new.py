@@ -27,7 +27,7 @@ LR_C = 0.002  # learning rate for critic
 # LR_A = 0.1  # learning rate for actor
 # LR_C = 0.2  # learning rate for critic
 # GAMMA = 0.001  # optimal reward discount
-GAMMA = 0.999  # reward discount
+GAMMA = 0.01  # reward discount
 TAU = 0.01  # soft replacement
 VAR_MIN = 0.01
 NOISE_DECAY = 0.995  # 噪声衰减率
@@ -159,8 +159,8 @@ a_bound = env.action_bound  # [-1,1]
 
 ddpg = DDPG(a_dim, s_dim, a_bound)
 
-# var = 1  # control exploration
 var = 1  # control exploration
+# var = 0.5  # control exploration
 decay_rate = NOISE_DECAY  # 噪声衰减
 t1 = time.time()
 ep_reward_list = []
@@ -185,20 +185,28 @@ for i in range(MAX_EPISODES):
         ddpg.store_transition(s_normal.state_normal(s), a, r, s_normal.state_normal(s_))  # 训练奖励缩小10倍
 
         if ddpg.pointer > BATCH_SIZE:
-            # var = max([var * 0.9997, VAR_MIN])  # decay the action randomness
             ddpg.learn()
+
         s = s_
         ep_reward += r
+
+        # 终止条件
         if j == MAX_EP_STEPS - 1 or is_terminal:
             print('Episode:', i, ' Steps: %2d' % j, ' Reward: %7.2f' % ep_reward, 'Explore: %.3f' % var)
             ep_reward_list = np.append(ep_reward_list, ep_reward)
-            # file_name = 'output_ddpg_' + str(self.bandwidth_nums) + 'MHz.txt'
+            # 文件记录
             file_name = 'output.txt'
             with open(file_name, 'a') as file_obj:
-                file_obj.write("\n======== This episode is done ========")  # 本episode结束
+                file_obj.write("\n======== This episode is done ========")
             break
+
         j = j + 1
+
+    # 在每个回合结束时，衰减噪声的方差，逐渐减少探索，增加稳定性
     var = max([var * decay_rate, VAR_MIN])
+
+    # var = 0.01
+
 
     # # Evaluate episode
     # if (i + 1) % 50 == 0:
@@ -209,3 +217,6 @@ plt.plot(ep_reward_list)
 plt.xlabel("Episode")
 plt.ylabel("Reward")
 plt.show()
+with open("reward_ddpg80.txt", "w") as file:
+    for reward in ep_reward_list:
+        file.write(f"{reward}\n")

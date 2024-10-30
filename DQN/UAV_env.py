@@ -6,19 +6,20 @@ import numpy as np
 
 class UAVEnv(object):
     height = ground_length = ground_width = 100  # 场地长宽均为100m，UAV飞行高度也是
-    sum_task_size = 60 * 1048576  # 总计算任务60 Mbits
+    sum_task_size = 100 * 1048576  # 总计算任务100 Mbits --> 60 80 100 120 140
     loc_uav = [50, 50]
     bandwidth_nums = 1
     B = bandwidth_nums * 10 ** 6  # 带宽1MHz
     p_noisy_los = 10 ** (-13)  # 噪声功率-100dBm
     p_noisy_nlos = 10 ** (-11)  # 噪声功率-80dBm
-    flight_speed = 50.  # 飞行速度50m/s
+    flight_speed = 15.  # 飞行速度50m/s
+    # f_ue = 6e8  # UE的计算频率0.6GHz
     f_ue = 3e8  # UE的计算频率0.6GHz
     f_uav = 1.2e9  # UAV的计算频率1.2GHz
     r = 10 ** (-27)  # 芯片结构对cpu处理的影响因子
     s = 1000  # 单位bit处理所需cpu圈数1000
     p_uplink = 0.1  # 上行链路传输功率0.1W
-    alpha0 = 0.00001  # 距离为1m时的参考信道增益-50dB = 0.001
+    alpha0 = 1e-5  # 距离为1m时的参考信道增益-30dB = 0.001， -50dB = 1e-5
     T = 320  # 周期320s
     t_fly = 1
     t_com = 7

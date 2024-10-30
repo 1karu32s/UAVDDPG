@@ -1,15 +1,4 @@
-"""
-Note: This is a updated version from my previous code,
-for the target network, I use moving average to soft replace target parameters instead using assign function.
-By doing this, it has 20% speed up on my machine (CPU).
 
-Deep Deterministic Policy Gradient (DDPG), Reinforcement Learning.
-DDPG is Actor Critic based algorithm.
-
-Using:
-tensorflow 1.14.0
-gym 0.15.3
-"""
 
 import tensorflow as tf
 import numpy as np

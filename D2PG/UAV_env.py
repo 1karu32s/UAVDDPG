@@ -6,7 +6,7 @@ import numpy as np
 
 class UAVEnv(object):
     height = ground_length = ground_width = 100  # 场地长宽均为100m，UAV飞行高度也是
-    sum_task_size = 100 * 1048576  # 总计算任务60 Mbits --> 60 80 100 120 140
+    sum_task_size = 140 * 1048576  # 总计算任务100 Mbits --> 60 80 100 120 140
     loc_uav = [50, 50]
     bandwidth_nums = 1
     B = bandwidth_nums * 10 ** 6  # 带宽1MHz
@@ -56,7 +56,7 @@ class UAVEnv(object):
         self.state = self.start_state
 
     def reset_env(self):
-        self.sum_task_size = 100 * 1048576  # 总计算任务60 Mbits -> 60 80 100 120 140
+        self.sum_task_size = 140 * 1048576  # 总计算任务60 Mbits -> 60 80 100 120 140
         self.e_battery_uav = 500000  # uav电池电量: 500kJ
         self.loc_uav = [50, 50]
         self.loc_ue_list = np.random.randint(0, 101, size=[self.M, 2])  # 位置信息:x在0-100随机

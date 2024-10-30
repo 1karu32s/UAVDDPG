@@ -19,7 +19,7 @@ class DeepQNetwork:
             learning_rate=0.001,  # 调低学习率
             reward_decay=0.95,    # 调高奖励折扣因子
             e_greedy=0.9,         # 探索率最大值调整为0.9
-            replace_target_iter=250,  # 增加目标网络的更新频率
+            replace_target_iter=125,  # 增加目标网络的更新频率
             memory_size=MEMORY_CAPACITY,
             batch_size=BATCH_SIZE,
             e_greedy_increment=0.0001,  # 启用epsilon递增策略
@@ -200,3 +200,6 @@ plt.xlabel("Episode")
 plt.ylabel("Reward")
 plt.savefig("dqn.png")
 plt.show()
+with open("reward_dqn.txt", "w") as file:
+    for reward in ep_reward_list:
+        file.write(f"{reward}\n")

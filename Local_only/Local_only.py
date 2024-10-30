@@ -6,15 +6,15 @@ import numpy as np
 
 class UAVEnv(object):
     height = ground_length = ground_width = 100  # 场地长宽均为100m，UAV飞行高度也是
-    sum_task_size = 100 * 1048576  # 总计算任务60 Mbits --> 60 80 100 120 140
+    sum_task_size = 80 * 1048576  # 总计算任务100 Mbits --> 60 80 100 120 140
     loc_uav = [50, 50]
     bandwidth_nums = 1
     B = bandwidth_nums * 10 ** 6  # 带宽1MHz
     p_noisy_los = 10 ** (-13)  # 噪声功率-100dBm
     p_noisy_nlos = 10 ** (-11)  # 噪声功率-80dBm
-    flight_speed = 50.  # 飞行速度50m/s
+    flight_speed = 15.  # 飞行速度15m/s
     # f_ue = 6e8  # UE的计算频率0.6GHz
-    f_ue = 2e8  # UE的计算频率0.6GHz
+    f_ue = 3e8  # UE的计算频率0.3GHz
     f_uav = 1.2e9  # UAV的计算频率1.2GHz
     r = 10 ** (-27)  # 芯片结构对cpu处理的影响因子
     s = 1000  # 单位bit处理所需cpu圈数1000
@@ -44,8 +44,7 @@ class UAVEnv(object):
 
     action_bound = [-1, 1]  # 对应tahn激活函数
     action_dim = 4  # 第一位表示服务的ue id;中间两位表示飞行角度和距离；后1位表示目前服务于UE的卸载率
-    state_dim = 4 + M * 4  # uav battery remain, uav loc, remaining sum task size, all ue loc, all ue task size, all ue block_flag
-
+    state_dim = 4 + M * 4
     def __init__(self):
         # uav battery remain, uav loc, remaining sum task size, all ue loc, all ue task size, all ue block_flag
         self.start_state = np.append(self.e_battery_uav, self.loc_uav)
@@ -66,7 +65,7 @@ class UAVEnv(object):
         return self._get_obs()
 
     def reset_env(self):
-        self.sum_task_size = 100 * 1048576  # 总计算任务60 Mbits
+        self.sum_task_size = 80 * 1048576  # 总计算任务60 Mbits
         self.e_battery_uav = 500000  # uav电池电量: 500kJ
         self.loc_uav = [50, 50]
         self.loc_ue_list = np.random.randint(0, 101, size=[self.M, 2])  # 位置信息:x在0-100随机

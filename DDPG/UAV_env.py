@@ -140,13 +140,13 @@ class UAVEnv(object):
         elif self.e_battery_uav < e_fly or self.e_battery_uav - e_fly < e_server:  # 电池电量不足
             delay = self.com_delay(self.loc_ue_list[ue_id], np.array([loc_uav_after_fly_x, loc_uav_after_fly_y]), 0,
                                    task_size, block_flag)
-            reward = -delay - e_fly*0.01   # 更新奖励，包含能量惩罚
+            reward = -delay - e_fly * 0.01   # 更新奖励，包含能量惩罚
             self.reset2(delay, loc_uav_after_fly_x, loc_uav_after_fly_y, 0, task_size, ue_id)
             offloading_ratio_change = True
         else:  # 电量足够，正常飞行和计算
             delay = self.com_delay(self.loc_ue_list[ue_id], np.array([loc_uav_after_fly_x, loc_uav_after_fly_y]),
                                    offloading_ratio, task_size, block_flag)
-            reward = -delay - e_fly*0.01   # 奖励包含飞行和计算能量的惩罚
+            reward = -delay - e_fly * 0.01   # 奖励包含飞行和计算能量的惩罚
             self.e_battery_uav -= e_fly + e_server  # 更新电池电量
             self.loc_uav[0] = loc_uav_after_fly_x  # 更新UAV位置
             self.loc_uav[1] = loc_uav_after_fly_y

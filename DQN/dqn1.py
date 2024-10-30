@@ -202,3 +202,6 @@ plt.xlabel("Episode")
 plt.ylabel("Reward")
 plt.savefig("dqn.png")
 plt.show()
+with open("reward_dqn.txt", "w") as file:
+    for reward in ep_reward_list:
+        file.write(f"{reward}\n")
